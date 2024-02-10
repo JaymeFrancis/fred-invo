@@ -14,13 +14,25 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::view('/', 'welcome');
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified'])->group(function (){
+    Route::view('dashboard', 'dashboard')
     ->name('dashboard');
+    
+    Route::view('joborder', 'joborder')
+    ->name('joborder');
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
+    Route::view('autosupply', 'autosupply')
+    ->name('autosupply');
+
+    Route::view('reports', 'reports')
+    ->name('reports');
+
+    Route::view('utilities', 'utilities')
+    ->name('utilities');
+
+    Route::view('profile', 'profile')
     ->name('profile');
+});
+
 
 require __DIR__.'/auth.php';
