@@ -11,7 +11,6 @@
 
     <div class="py-8">
         <div class="mx-8 sm:px-6 lg:px-8">
-            
             {{-- Navigation --}}
             <div class="flex space-x-4 float-end" x-data="{openModal: false}">
                 <x-secondary-button type="button">
@@ -39,9 +38,10 @@
                 {{session()->get('success')}}
             @endif
 
-            @foreach ($items as $item)
-                <p>{{ $item->itemName }} {{ $item->itemQuantity }} {{ $item->unitPrice }} </p>
-            @endforeach
+        </div>
+
+        <div class="mx-8 mt-10 border border-red-500 sm:p-6 lg:p-8">
+            <livewire:tables.autosupplytable />
         </div>
     </div>
 </x-app-layout>
