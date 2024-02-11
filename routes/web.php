@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\JobOrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,22 +17,24 @@ use Illuminate\Support\Facades\Route;
 
 // Route::view('/', 'welcome');
 Route::middleware(['auth', 'verified'])->group(function (){
-    Route::view('dashboard', 'dashboard')
+    Route::view('dashboard', 'pages.dashboard')
     ->name('dashboard');
     
-    Route::view('joborder', 'joborder')
-    ->name('joborder');
+    Route::get("/joborder", [JobOrderController::class, "index"])->name('joborder');
 
-    Route::view('autosupply', 'autosupply')
-    ->name('autosupply');
+    
+    Route::prefix('inventory')->group(function (){
+        Route::get("/", [InventoryController::class, "index"])->name('inventory');
+        Route::post('/store', [InventoryController::class, "store"])->name('store-item');
+    });
 
-    Route::view('reports', 'reports')
+    Route::view('reports', 'pages.reports')
     ->name('reports');
 
-    Route::view('utilities', 'utilities')
+    Route::view('utilities', 'pages.utilities')
     ->name('utilities');
 
-    Route::view('profile', 'profile')
+    Route::view('profile', 'pages.profile')
     ->name('profile');
 });
 
