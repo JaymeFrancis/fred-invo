@@ -39,9 +39,9 @@
             @endif
 
         </div>
+    </div>
 
-        <div class="mx-8 mt-10 border border-red-500 sm:p-6 lg:p-8">
-            <livewire:tables.autosupplytable />
-        </div>
+    <div class="m-8 bg-white rounded-md shadow-lg sm:p-6 lg:p-8">
+        <livewire:tables.autosupplytable />
     </div>
 </x-app-layout>

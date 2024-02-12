@@ -12,8 +12,13 @@ class AutoSupplyTable extends DataTableComponent
 
     public function configure(): void
     {
-        $this->setPrimaryKey('id');
+        $this->setPrimaryKey('id')
+             ->setDefaultSort('itemName', 'asc');
 
+        $this->setTheadAttributes([
+            'default' => false,
+            'class' => 'bg-gray-800',
+        ]);
     }
 
     public function columns(): array
@@ -30,11 +35,18 @@ class AutoSupplyTable extends DataTableComponent
                 ->searchable(),
             Column::make("UnitPrice", "unitPrice")
                 ->sortable()
-                ->searchable(),
-            Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
-                ->sortable(),
+                ->searchable()
+                ->format(function($value){
+                    return '₱ '.$value;
+                }),
+            Column::make('Action')
+                ->label(
+                    fn ($row, Column $column) => view('components.action-buttons')->with([
+                        'viewLink' => route('users.view', $row),
+                        'editLink' => route('users.edit', $row),
+                        'deleteLink' => route('users.delete', $row),
+                    ])
+                )->html(),
         ];
     }
 }
