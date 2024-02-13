@@ -19,32 +19,50 @@ class AutoSupplyTable extends DataTableComponent
             'default' => false,
             'class' => 'bg-gray-800',
         ]);
+
+        $this->setThAttributes(function(Column $column) {
+            if ($column) {
+              return [
+                'default' => true,
+                'class' => 'text-white',
+              ];
+            }
+         
+            return [];
+          })->setThSortButtonAttributes(function(Column $column) {
+            if ($column) {
+                return [
+                'default' => true,
+                'class' => 'text-white',
+                ];
+            }
+            
+            return [];
+            });
     }
 
     public function columns(): array
     {
         return [
             Column::make("Id", "id")
+                ->hideIf(true),
+            Column::make("Item Name", "itemName")
                 ->sortable()
                 ->searchable(),
-            Column::make("ItemName", "itemName")
+            Column::make("Item Quantity", "itemQuantity")
                 ->sortable()
                 ->searchable(),
-            Column::make("ItemQuantity", "itemQuantity")
-                ->sortable()
-                ->searchable(),
-            Column::make("UnitPrice", "unitPrice")
+            Column::make("Unit Price", "unitPrice")
                 ->sortable()
                 ->searchable()
                 ->format(function($value){
                     return '₱ '.$value;
                 }),
-            Column::make('Action')
+            Column::make('Actions')
                 ->label(
                     fn ($row, Column $column) => view('components.action-buttons')->with([
-                        'viewLink' => route('users.view', $row),
-                        'editLink' => route('users.edit', $row),
-                        'deleteLink' => route('users.delete', $row),
+                        'viewLink' => '#',
+                        'editLink' => '#',
                     ])
                 )->html(),
         ];
