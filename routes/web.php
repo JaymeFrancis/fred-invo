@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function (){
     Route::prefix('inventory')->group(function (){
         Route::get("/", [InventoryController::class, "index"])->name('inventory');
         Route::post('/store', [InventoryController::class, "store"])->name('store-item');
+        Route::get('/{id}/edit', [InventoryController::class, "edit"])->name('edit-item');
     });
 
     Route::view('reports', 'pages.reports')

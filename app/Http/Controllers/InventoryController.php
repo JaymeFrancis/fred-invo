@@ -25,4 +25,11 @@ class InventoryController extends Controller
 
         return redirect(route('inventory'))->with("success", "You have added a new stock!");
     }
+
+    public function edit($id){
+        
+        $item = AutoSupply::where('id', $id)->firstOrFail();
+        return view('pages.inventory.edit-item')->with('item', $item);
+
+    }
 }

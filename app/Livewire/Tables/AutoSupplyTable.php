@@ -61,9 +61,7 @@ class AutoSupplyTable extends DataTableComponent
             Column::make('Actions')
                 ->label(
                     fn ($row, Column $column) => view('components.action-buttons')->with([
-                        'viewLink' => '#',
-                        'editLink' => '#',
-                        'deleteLink' => '#',
+                        'viewLink' => route('edit-item', $row->id),
                     ])
                 )->html(),
         ];

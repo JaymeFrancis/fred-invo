@@ -36,7 +36,7 @@ new class extends Component
                     <x-nav-link :href="route('joborder')" :active="request()->routeIs('joborder')" wire:navigate>
                         Job Order
                     </x-nav-link>
-                    <x-dropdown-nav-link align="left" width="48" :active="request()->routeIs('inventory','invoice')">
+                    <x-dropdown-nav-link align="left" width="48" :active="request()->routeIs('inventory','invoice','edit-item')">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none">
                                 Auto Supply
