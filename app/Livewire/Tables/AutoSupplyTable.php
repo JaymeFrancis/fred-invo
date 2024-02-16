@@ -63,6 +63,7 @@ class AutoSupplyTable extends DataTableComponent
                     fn ($row, Column $column) => view('components.action-buttons')->with([
                         'viewLink' => '#',
                         'editLink' => '#',
+                        'deleteLink' => '#',
                     ])
                 )->html(),
         ];

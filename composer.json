@@ -13,7 +13,8 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
         "livewire/volt": "^1.0",
-        "rappasoft/laravel-livewire-tables": "^3.2"
+        "rappasoft/laravel-livewire-tables": "^3.2",
+        "wireui/heroicons": "^2.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
