@@ -1,21 +1,33 @@
 <?php
 
+use App\Models\AutoSupply;
 use function Livewire\Volt\{state};
 
-state(['item'])
+state([
+    'item',
+]);
+
+$updateItemInformation = function() {
+
+    $currentItem = AutoSupply::find($item->id);
+
+    $validated = $this->validate([
+        'itemName' => 'required|string|max:255|unique:'.AutoSupply::class,
+        'itemQuantity' => 'required|numeric',
+        'unitPrice' => 'required|numeric',
+    ]);
+
+    $currentItem->update([
+        'itemName' => $validated['itemName'],
+        'itemQuantity' => $validated['itemQuantity'],
+        'unitPrice' => $validated['unitPrice'],
+    ]);
+}
 
 ?>
 
-<div>
-    <div>
-        <p>{{ $item->id }}</p>
-        <p>{{ $item->itemName }}</p>
-        <p>{{ $item->itemQuantity }}</p>
-        <p>{{ $item->unitPrice }}</p>
-    </div>
-
-    <div class="w-1/2 p-4 border rounded-lg shadow-md">
-        <form method="POST" action="#" class="flex flex-col p-6">
+<x-modal name="editItem" :show="$errors->isNotEmpty()" focusable>
+        <form action="#" class="flex flex-col p-6">
             @csrf
             <h2 class="text-lg font-bold text-gray-900 uppercase">
                 Edit this item's details
@@ -30,9 +42,9 @@ state(['item'])
     
                 <x-text-input
                     id="itemName"
-                    name="itemName"
+                    wire:model="name"
                     type="text"
-                    class="block w-1/2 mt-1"
+                    class="block w-full mt-1"
                     placeholder="Item Name"
                     value="{{$item->itemName}}"
                 />
@@ -44,9 +56,9 @@ state(['item'])
                 
                 <x-text-input
                     id="itemQuantity"
-                    name="itemQuantity"
+                    wire:model="quantity"
                     type="text"
-                    class="block w-1/2 mt-1"
+                    class="block w-full mt-1"
                     placeholder="Item Quantity"
                     value="{{$item->itemQuantity}}"
                 />
@@ -59,9 +71,9 @@ state(['item'])
     
                     <x-text-input
                         id="unitPrice"
-                        name="unitPrice"
+                        wire:model="price"
                         type="text"
-                        class="block w-1/2 mt-1"
+                        class="block w-full mt-1"
                         placeholder="Unit Price"
                         value="{{$item->unitPrice}}"
                     />
@@ -74,9 +86,9 @@ state(['item'])
     
                     <x-text-input
                         id="supplier"
-                        name="supplier"
+                        wire:model="supplier"
                         type="text"
-                        class="block w-1/2 mt-1"
+                        class="block w-full mt-1"
                         placeholder="Supplier"
                     />
     
@@ -84,7 +96,7 @@ state(['item'])
                 </div>
                 
                 <div class="flex justify-end mt-6">
-                    <x-secondary-button>
+                    <x-secondary-button x-on:click="$dispatch('close')">
                         Cancel
                     </x-secondary-button>
     
@@ -93,5 +105,4 @@ state(['item'])
                     </x-primary-button>
                 </div>
         </form>
-    </div>
-</div>
+</x-modal>

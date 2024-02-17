@@ -29,7 +29,7 @@ class InventoryController extends Controller
     public function edit($id){
         
         $item = AutoSupply::where('id', $id)->firstOrFail();
-        return view('pages.inventory.edit-item')->with('item', $item);
+        return view('pages.inventory.view-item')->with('item', $item);
 
     }
 }
