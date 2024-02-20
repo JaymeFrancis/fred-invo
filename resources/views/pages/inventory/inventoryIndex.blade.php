@@ -22,7 +22,7 @@
                     <x-icon name="plus-circle" solid class="w-6 h-6 ms-2" />
                 </x-primary-button>
             
-                <livewire:pages.inventory.add-new-stocks>
+                
             </div>
                 
             {{-- Table --}}
@@ -34,6 +34,7 @@
     </div>
 
     <div class="m-8 bg-white rounded-md shadow-lg sm:p-6 lg:p-8">
-        <livewire:tables.autosupplytable />
+        <livewire:pages.inventory.add-new-stocks lazy>
+        <livewire:tables.autosupplytable lazy/>
     </div>
 </x-app-layout>

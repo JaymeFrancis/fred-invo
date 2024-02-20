@@ -1,35 +1,3 @@
-{{-- Modal --}}
-
-<?php
-
-// use App\Models\AutoSupply;
-// use App\Providers\RouteServiceProvider;
-// use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Session;
-// use Illuminate\Validation\Rule;
-// use Livewire\Volt\Component;
-
-// new class extends Component {
-//     public string $itemName = '';
-//     public string $itemQuantity = '';
-//     public string $unitPrice = '';
-//     public string $supplier = '';
-
-//     public function addNewStock(): void{
-
-//         $validated = $this->validate([
-//             'itemName' => ['required', 'string', 'max:255'],
-//             'itemQuantity' => ['requried', 'numeric', 'max:10'],
-//             'unitPrice' => ['required', 'numeric', 'max:10'],
-//         ]);
-
-//         AutoSupply::create($validated);
-//     }
-// };
-
-?>
-
-{{-- $errors->isNotEmpty() : old trigger for modal--}}
 <x-modal name="newStock" :show="$errors->isNotEmpty()" focusable>
     <form method="POST" action="{{route('store-item')}}" class="flex flex-col p-6">
         @csrf
@@ -42,7 +10,7 @@
         </p>
         
         <div class="mt-6">
-            <x-input-label for="itemName" value="Item Name" class="sr-only" />
+            <x-input-label for="itemName" value="Item Name" class="uppercase" />
 
             <x-text-input
                 id="itemName"
@@ -56,7 +24,7 @@
             <x-input-error :messages="$errors->get('itemName')" class="mt-2" />
         </div>
         <div class="mt-3">
-            <x-input-label for="itemQuantity" value="Item Quantity" class="sr-only" />
+            <x-input-label for="itemQuantity" value="Item Quantity" class="uppercase" />
             
             <x-text-input
                 id="itemQuantity"
@@ -71,7 +39,7 @@
             </div>
 
             <div class="mt-3">
-                <x-input-label for="unitPrice" value="Unit Price" class="sr-only" />
+                <x-input-label for="unitPrice" value="Unit Price" class="uppercase" />
 
                 <x-text-input
                     id="unitPrice"
@@ -86,7 +54,7 @@
             </div>
 
             <div class="mt-3">
-                <x-input-label for="supplier" value="Supplier" class="sr-only" />
+                <x-input-label for="supplier" value="Supplier" class="uppercase" />
 
                 <x-text-input
                     id="supplier"

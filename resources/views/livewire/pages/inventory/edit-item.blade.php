@@ -1,18 +1,31 @@
 <?php
 
 use App\Models\AutoSupply;
-use function Livewire\Volt\{state};
+use Illuminate\Validation\Rule;
+use function Livewire\Volt\{state, mount};
+
 
 state([
-    'item',
+    'itemId',
+    'itemName',
+    'itemQuantity',
+    'unitPrice',
 ]);
+
+mount(function ($item){
+    $this->itemId = $item->id;
+    $this->itemName = $item->itemName;
+    $this->itemQuantity = $item->itemQuantity;
+    $this->unitPrice = $item->unitPrice;
+});
+
 
 $updateItemInformation = function() {
 
-    $currentItem = AutoSupply::find($item->id);
+    $currentItem = AutoSupply::find($this->itemId);
 
     $validated = $this->validate([
-        'itemName' => 'required|string|max:255|unique:'.AutoSupply::class,
+        'itemName' => 'required|string|max:255|'.Rule::unique(AutoSupply::class)->ignore($this->itemId),
         'itemQuantity' => 'required|numeric',
         'unitPrice' => 'required|numeric',
     ]);
@@ -22,67 +35,61 @@ $updateItemInformation = function() {
         'itemQuantity' => $validated['itemQuantity'],
         'unitPrice' => $validated['unitPrice'],
     ]);
+
+    $this->dispatch('close-modal', 'editItem');
 }
 
 ?>
 
-<x-modal name="editItem" :show="$errors->isNotEmpty()" focusable>
-        <form action="#" class="flex flex-col p-6">
-            @csrf
-            <h2 class="text-lg font-bold text-gray-900 uppercase">
-                Edit this item's details
-            </h2>
-    
-            <p class="mt-1 text-sm text-gray-600">
-                Please enter the details of the item you want to edit.
-            </p>
-            
-            <div class="mt-6">
-                <x-input-label for="itemName" value="Item Name" class="sr-only" />
-    
-                <x-text-input
-                    id="itemName"
-                    wire:model="name"
-                    type="text"
-                    class="block w-full mt-1"
-                    placeholder="Item Name"
-                    value="{{$item->itemName}}"
-                />
-    
-                <x-input-error :messages="$errors->get('itemName')" class="mt-2" />
-            </div>
-            <div class="mt-3">
-                <x-input-label for="itemQuantity" value="Item Quantity" class="sr-only" />
+<div>
+    <div>
+        <p>ID: {{ $itemId }}</p>
+        <p>Item Name: {{ $itemName }}</p>
+        <p>Item Quantity: {{ $itemQuantity }}</p>
+        <p>Item Price: {{ $unitPrice }}</p>
+    </div>
+
+    <x-modal name="editItem" :show="$errors->isNotEmpty()" focusable>
+            <form wire:submit='updateItemInformation' class="flex flex-col p-6">
+                @csrf
+                <h2 class="text-lg font-bold text-gray-900 uppercase">
+                    Edit this item's details
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-600">
+                    Please enter the details of the item you want to edit.
+                </p>
                 
-                <x-text-input
-                    id="itemQuantity"
-                    wire:model="quantity"
-                    type="text"
-                    class="block w-full mt-1"
-                    placeholder="Item Quantity"
-                    value="{{$item->itemQuantity}}"
-                />
-    
-                <x-input-error :messages="$errors->get('itemQuantity')" class="mt-2" />
+                <div class="mt-6">
+                    <x-input-label for="itemName" value="Item Name" class="" />
+        
+                    <x-text-input
+                        id="itemName"
+                        wire:model="itemName"
+                        type="text"
+                        class="block w-full mt-1"
+                        placeholder="Item Name"
+                    />
+        
+                    <x-input-error :messages="$errors->get('itemName')" class="mt-2" />
                 </div>
-    
+        
                 <div class="mt-3">
-                    <x-input-label for="unitPrice" value="Unit Price" class="sr-only" />
+                    <x-input-label for="unitPrice" value="Unit Price" class="" />
     
                     <x-text-input
                         id="unitPrice"
-                        wire:model="price"
+                        wire:model="unitPrice"
                         type="text"
                         class="block w-full mt-1"
                         placeholder="Unit Price"
-                        value="{{$item->unitPrice}}"
                     />
     
                     <x-input-error :messages="$errors->get('unitPrice')" class="mt-2" />
                 </div>
     
                 <div class="mt-3">
-                    <x-input-label for="supplier" value="Supplier" class="sr-only" />
+                    <x-input-label for="supplier" value="Supplier" class="" />
     
                     <x-text-input
                         id="supplier"
@@ -104,5 +111,6 @@ $updateItemInformation = function() {
                         Submit
                     </x-primary-button>
                 </div>
-        </form>
-</x-modal>
+            </form>
+    </x-modal>
+</div>

@@ -19,7 +19,7 @@
                     <x-icon name="pencil-square" solid class="w-6 h-6 ms-2" />
                 </x-secondary-button>
 
-                <livewire:pages.inventory.edit-item :item="$item"/>
+                
                 
                 {{-- Add Stock button and Modal --}}
                 <x-primary-button type="button" x-on:click="$dispatch('open-modal', 'newStock')">
@@ -27,7 +27,7 @@
                     <x-icon name="plus-circle" solid class="w-6 h-6 ms-2" />
                 </x-primary-button>
             
-                <livewire:pages.inventory.add-new-stocks>
+                
             </div>
                 
             {{-- Table --}}
@@ -39,11 +39,7 @@
     </div>
 
     <div class="m-8 bg-white rounded-md shadow-lg sm:p-6 lg:p-8">
-        <div>
-            <p>ID: {{ $item->id }}</p>
-            <p>Item Name: {{ $item->itemName }}</p>
-            <p>Item Quantity: {{ $item->itemQuantity }}</p>
-            <p>Item Price: {{ $item->unitPrice }}</p>
-        </div>
+        <livewire:pages.inventory.add-new-stocks lazy>
+        <livewire:pages.inventory.edit-item :item="$item" lazy>
     </div>
 </x-app-layout>
