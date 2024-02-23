@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\AutoSupply;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
     public function index(){
 
-        $items = AutoSupply::all();
-        return view("pages.inventory.inventoryIndex", ["items" => $items]);
+        return view("pages.inventory.inventoryIndex");
     }
 
     public function store(Request $request){
@@ -29,7 +29,7 @@ class InventoryController extends Controller
     public function edit($id){
         
         $item = AutoSupply::where('id', $id)->firstOrFail();
-        return view('pages.inventory.view-item')->with('item', $item);
+        return view("pages.inventory.viewContainer", compact('item'));
 
     }
 }
