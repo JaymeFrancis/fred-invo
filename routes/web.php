@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\JobOrderController;
+use App\Http\Controllers\SupplierController;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -28,7 +30,11 @@ Route::middleware(['auth', 'verified'])->group(function (){
         Route::get("/", [InventoryController::class, "index"])->name('inventory');
         Route::post('/store', [InventoryController::class, "store"])->name('store-item');
         Route::get('/{id}/view', [InventoryController::class, "edit"])->name('view-item');
-        Volt::route('view-item', 'pages.inventory.view-item')->name('volt-view-item');
+    });
+
+    Route::prefix('supplier')->group(function (){
+        Route::get('/', [SupplierController::class, 'index'])->name('supplier');
+        Route::post('/store', [SupplierController::class, 'store'])->name('store-supplier');
     });
 
     Route::view('reports', 'pages.reports')

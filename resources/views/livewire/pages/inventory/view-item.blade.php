@@ -1,35 +1,56 @@
 <?php
 use App\Models\AutoSupply;
 use Illuminate\Validation\Rule;
-use function Livewire\Volt\{state, mount};
+use Livewire\Volt\Component;
 
-state(['itemId', 'itemName', 'itemQuantity', 'unitPrice']);
+new class extends Component {
+    public $itemId;
+    public $itemName;
+    public $itemQuantity;
+    public $unitPrice;
+    public $addRemove;
 
-mount(function ($item) {
-    $this->itemId = $item->id;
-    $this->itemName = $item->itemName;
-    $this->itemQuantity = $item->itemQuantity;
-    $this->unitPrice = $item->unitPrice;
-});
+    public function mount($item)
+    {
+        $this->itemId = $item->id;
+        $this->itemName = $item->itemName;
+        $this->itemQuantity = $item->itemQuantity;
+        $this->unitPrice = $item->unitPrice;
+        $this->addRemove = $item->itemQuantity;
+    }
 
-//Update this item's data excluding quantity
-$updateItemInformation = function () {
-    $currentItem = AutoSupply::find($this->itemId);
+    public function increase()
+    {
+        $this->addRemove++;
+    }
 
-    $validated = $this->validate([
-        'itemName' => 'required|string|max:255|' . Rule::unique(AutoSupply::class)->ignore($this->itemId),
-        'itemQuantity' => 'required|numeric',
-        'unitPrice' => 'required|numeric',
-    ]);
+    public function decrease()
+    {
+        $this->addRemove--;
+    }
 
-    $currentItem->update([
-        'itemName' => $validated['itemName'],
-        'itemQuantity' => $validated['itemQuantity'],
-        'unitPrice' => $validated['unitPrice'],
-    ]);
+    public function updateItemInformation()
+    {
+        $currentItem = AutoSupply::find($this->itemId);
 
-    $this->dispatch('close-modal', 'editItem');
+        $validated = $this->validate([
+            'itemName' => 'required|string|max:255|' . Rule::unique(AutoSupply::class)->ignore($this->itemId),
+            'addRemove' => 'required|numeric',
+            'unitPrice' => 'required|numeric',
+        ]);
+
+        $currentItem->update([
+            'itemName' => $validated['itemName'],
+            'itemQuantity' => $validated['addRemove'],
+            'unitPrice' => $validated['unitPrice'],
+        ]);
+
+        $this->dispatch('close-modal', 'editItem');
+
+        $this->itemQuantity = $this->addRemove;
+    }
 };
+
 ?>
 
 
@@ -37,7 +58,7 @@ $updateItemInformation = function () {
     <div>
         <p>ID: {{ $itemId }}</p>
         <p>Item Name: {{ $itemName }}</p>
-        <p>Item Quantity: {{ $itemQuantity }}</p>
+        <p>Item Quantity: {{ $itemQuantity }} </p>
         <p>Item Price: {{ $unitPrice }}</p>
     </div>
 
@@ -71,6 +92,23 @@ $updateItemInformation = function () {
             </div>
 
             <div class="mt-3">
+                <x-input-label for="itemQuantity" value="Item Quantity" class="" />
+
+                <div class="flex space-x-4">
+                    <button wire:click='decrease' type="button">
+                        <x-icon name="minus-circle" solid mini class="w-6 h-6 text-red-400 hover:text-red-700" />
+                    </button>
+                    <x-text-input id="itemQuantity" wire:model="addRemove" type="text" class="block w-full mt-1"
+                        placeholder="Item Quantity" />
+                    <button wire:click='increase' type="button">
+                        <x-icon name="plus-circle" solid mini class="w-6 h-6 text-green-400 hover:text-green-700" />
+                    </button>
+                </div>
+
+                <x-input-error :messages="$errors->get('itemQuantity')" class="mt-2" />
+            </div>
+
+            <div class="mt-3">
                 <x-input-label for="supplier" value="Supplier" class="" />
 
                 <x-text-input id="supplier" wire:model="supplier" type="text" class="block w-full mt-1"
@@ -91,8 +129,8 @@ $updateItemInformation = function () {
         </form>
     </x-modal>
 
-    <x-modal name="addStock" :show="$errors->isNotEmpty()" focusable>
-        <div class="p-6" x-data='{decrease: false}'>
+    {{-- <x-modal name="addStock" :show="$errors->isNotEmpty()" focusable>
+        <div class="p-6" x-data="{ decrease: $wire.entangle('addRemove') }">
             <div class="flex justify-between">
                 <div>
                     <h2 class="text-lg font-bold text-gray-900 uppercase">
@@ -150,5 +188,5 @@ $updateItemInformation = function () {
                 </div>
             </form>
         </div>
-    </x-modal>
+    </x-modal> --}}
 </div>

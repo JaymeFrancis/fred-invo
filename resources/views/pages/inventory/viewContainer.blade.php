@@ -14,19 +14,10 @@
             {{-- Navigation --}}
             <div class="flex space-x-4 float-end">
                 {{-- Edit button and Modal --}}
-                <x-secondary-button type="button" x-on:click="$dispatch('open-modal', 'editItem')">
+                <x-primary-button type="button" x-on:click="$dispatch('open-modal', 'editItem')">
                     Edit Item Information
                     <x-icon name="pencil-square" solid class="w-6 h-6 ms-2" />
-                </x-secondary-button>
-
-
-
-                {{-- Add Stock button and Modal --}}
-                <x-primary-button type="button" x-on:click="$dispatch('open-modal', 'addStock')">
-                    Add Stock
-                    <x-icon name="plus-circle" solid class="w-6 h-6 ms-2" />
                 </x-primary-button>
-
 
             </div>
 

@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Supplier extends Model
 {
     use HasFactory;
+
+    protected $table = 'suppliers';
+    protected $primarykey = 'id';
+    protected $fillable = [
+        'supplierName',
+        'supplierAddress',
+        'supplierContactNumber',
+    ];
 }
