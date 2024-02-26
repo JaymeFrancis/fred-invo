@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function (){
     
     Route::prefix('inventory')->group(function (){
         Route::get("/", [InventoryController::class, "index"])->name('inventory');
+        Route::get('/create', [InventoryController::class, "create"])->name('record-new-item');
         Route::post('/store', [InventoryController::class, "store"])->name('store-item');
         Route::get('/{id}/view', [InventoryController::class, "edit"])->name('view-item');
     });

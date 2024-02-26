@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AutoSupply;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +12,12 @@ class InventoryController extends Controller
     public function index(){
 
         return view("pages.inventory.inventoryIndex");
+    }
+
+    public function create(){
+        $suppliers = DB::table('suppliers')->pluck('supplierName', 'id');
+
+        return view("livewire.pages.inventory.add-new-stocks", compact('suppliers'));
     }
 
     public function store(Request $request){

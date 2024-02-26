@@ -10,7 +10,7 @@
     <div class="py-8">
         <div class="mx-8 sm:px-6 lg:px-8">
             {{-- Navigation --}}
-            <div class="flex space-x-4 float-end" x-data>
+            <div class="flex space-x-4 float-end">
                 <x-secondary-button type="button">
                     <a href="{{ route('supplier') }}" class="flex items-center">
                         Suppliers
@@ -18,10 +18,11 @@
                     </a>
                 </x-secondary-button>
 
-                {{-- $dispatch('open-modal', 'newStock') --}}
-                <x-primary-button type="button" x-on:click="$dispatch('open-modal', 'newStock')">
-                    Record New Item
-                    <x-icon name="plus-circle" solid class="w-6 h-6 ms-2" />
+                <x-primary-button type="button">
+                    <a href="{{ route('record-new-item') }}" class="flex items-center">
+                        Record New Item
+                        <x-icon name="plus-circle" solid class="w-6 h-6 ms-2" />
+                    </a>
                 </x-primary-button>
 
 
