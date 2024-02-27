@@ -1,7 +1,7 @@
 @props([
     'model',
     'placeHolder' => 'Please select an option',
-    'name' => 'Dropdown',
+    'name' => 'selectInput',
     'emptyMessage' => 'Nothing matches your search',
 ])
 
@@ -13,6 +13,8 @@
     placeholder: '{{ $placeHolder }}',
 })" x-init="init()" @click.away="closeListbox()" @keydown.escape="closeListbox()"
     class="relative mt-1">
+
+    <input type="hidden" :value='value' name="{{ $name }}" readonly>
 
     <span class="inline-block w-full rounded-md shadow-sm">
         <div x-ref="button" @click="toggleListboxVisibility()" :aria-expanded="open" aria-haspopup="listbox"

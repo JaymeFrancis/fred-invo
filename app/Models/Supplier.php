@@ -16,4 +16,8 @@ class Supplier extends Model
         'supplierAddress',
         'supplierContactNumber',
     ];
+
+    public function items(){
+        return $this->hasMany(AutoSupply::class);
+    }
 }

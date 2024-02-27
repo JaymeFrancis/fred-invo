@@ -15,5 +15,10 @@ class AutoSupply extends Model
         'itemName',
         'itemQuantity',
         'unitPrice',
+        'supplierId'
     ];
+
+    public function supplier(){
+        return $this->belongsTo(Supplier::class);
+    }
 }

@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string('itemName');
             $table->string('itemQuantity');
             $table->string('unitPrice');
+            $table->unsignedBigInteger('supplierId');
             $table->timestamps();
+            $table->foreign('supplierId')->references('id')->on('suppliers')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

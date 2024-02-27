@@ -9,17 +9,26 @@
         </h2>
     </x-slot>
     <div class="py-4">
-        <div class="m-8 bg-white rounded-md shadow-lg sm:p-4lg:p-6">
+        <div class="mx-16 mt-4 bg-white rounded-md shadow-lg sm:p-4 lg:p-6" x-data='{open: true}'>
             <form method="POST" action="{{ route('store-item') }}" class="flex flex-col p-6">
                 @csrf
-                <h2 class="text-lg font-bold text-gray-900 uppercase">
-                    Record item form
-                </h2>
+                <div class="flex justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-gray-900 uppercase">
+                            Record item form
+                        </h2>
 
-                <p class="mt-1 text-sm text-gray-600">
-                    Please enter the details of the item you want to add.
-                </p>
-
+                        <p class="mt-1 text-sm text-gray-600">
+                            Please enter the details of the item you want to add.
+                        </p>
+                    </div>
+                    <div>
+                        <x-secondary-button x-on:click='open = !open' type="button">
+                            <span x-text="open ? ' Choose From Existing Supplier' : 'New Supplier'"></span>
+                        </x-secondary-button>
+                        <input type="hidden" readonly :value="open ? 'new' : 'existing'" name="supplierType">
+                    </div>
+                </div>
                 <div class="mt-6">
                     <x-input-label for="itemName" value="Item Name" class="uppercase" />
 
@@ -49,16 +58,46 @@
                     </div>
                 </div>
 
-                <div class="mt-3">
+                <div class="mt-3" x-show='!open'>
                     <x-input-label value="Supplier" class="uppercase" />
-                    <x-select-search-dropdown model='{{ $suppliers }}' placeHolder="Select item supplier" />
 
-                    {{-- 
+                    <x-select-search-dropdown model='{{ $suppliers }}' placeHolder="Select item supplier"
+                        name='supplierId' />
 
-                    <x-text-input id="supplier" name="supplier" type="text" class="block w-full mt-1"
-                        placeholder="Supplier" />
+                    <x-input-error :messages="$errors->get('supplierId')" class="mt-2" />
+                </div>
 
-                    <x-input-error :messages="$errors->get('supplier')" class="mt-2" /> --}}
+                <div class="flex-col" x-show='open'>
+                    <div class="w-full mt-3">
+                        <x-input-label for="supplierName" value="Supplier Name" class="uppercase" />
+
+                        <x-text-input id="supplierName" name="supplierName" type="text" class="block w-full mt-1"
+                            placeholder="Supplier Name" value="{{ old('supplierName') }}" />
+
+                        <x-input-error :messages="$errors->get('supplierName')" class="mt-2" />
+                    </div>
+                    <div class="flex space-x-4">
+                        <div class="w-3/4 mt-3">
+                            <x-input-label for="supplierAddress" value="Supplier Address" class="uppercase" />
+
+                            <x-text-input id="supplierAddress" name="supplierAddress" type="text"
+                                class="block w-full mt-1" placeholder="Supplier Address"
+                                value="{{ old('supplierAddress') }}" />
+
+                            <x-input-error :messages="$errors->get('supplierAddress')" class="mt-2" />
+                        </div>
+
+                        <div class="w-1/4 mt-3">
+                            <x-input-label for="supplierContactNumber" value="Supplier Contact Number"
+                                class="uppercase" />
+
+                            <x-text-input id="supplierContactNumber" name="supplierContactNumber" type="text"
+                                class="block w-full mt-1" placeholder="Supplier Contact Number"
+                                value="{{ old('supplierContactNumber') }}" />
+
+                            <x-input-error :messages="$errors->get('supplierContactNumber')" class="mt-2" />
+                        </div>
+                    </div>
                 </div>
 
                 <div class="flex justify-end mt-6">
