@@ -25,8 +25,6 @@ class InventoryController extends Controller
         
         if($request->supplierType == 'new'){
             
-            // dd($request->supplierType);
-            // dd($newSupplier);
             $validated = $request->validate([
                 'itemName' => 'required|string|max:255|unique:'.AutoSupply::class,
                 'itemQuantity' => 'required|numeric',
@@ -41,17 +39,35 @@ class InventoryController extends Controller
             $newSupplier->supplierAddress = $validated['supplierAddress'];
             $newSupplier->supplierContactNumber = $validated['supplierContactNumber'];
             $newSupplier->save();
-            $newSupplier->id;
+            $supplierId = $newSupplier->id;
 
+            AutoSupply::create([
+                'itemName' => $validated['itemName'],
+                'itemQuantity' => $validated['itemQuantity'],
+                'unitPrice' => $validated['unitPrice'],
+                'supplierId' => $supplierId,
+            ]);
+
+            $success = "You have added a new item and supplier";
 
         }elseif($request->supplierType == 'existing'){
-            dd($request->supplierType);
+
             $validated = $request->validate([
                 'itemName' => 'required|string|max:255|unique:'.AutoSupply::class,
                 'itemQuantity' => 'required|numeric',
                 'unitPrice' => 'required|numeric',
                 'supplierId' => 'required|numeric',
             ]);
+
+            $itemId = AutoSupply::create([
+                'itemName' => $validated['itemName'],
+                'itemQuantity' => $validated['itemQuantity'],
+                'unitPrice' => $validated['unitPrice'],
+                'supplierId' => $validated['supplierId'],
+            ]);
+
+
+            $success = "You have added a new item";
         }
 
         
@@ -59,7 +75,7 @@ class InventoryController extends Controller
         
         // AutoSupply::create($items);
 
-        return redirect(route('inventory'))->with("success", "You have added a new stock!");
+        return redirect(route('inventory'))->with("success", $success);
     }
 
     public function edit($id){
