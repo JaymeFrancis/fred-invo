@@ -18,6 +18,6 @@ class Supplier extends Model
     ];
 
     public function items(){
-        return $this->hasMany(AutoSupply::class);
+        return $this->hasMany(AutoSupply::class, 'id');
     }
 }

@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
+    public function test(){
+        $test = AutoSupply::find(1);
+        $dump = $test->supplier->supplierName;
+        dd($dump);
+    }
+
     public function index(){
 
         return view("pages.inventory.inventoryIndex");
@@ -59,15 +65,15 @@ class InventoryController extends Controller
                 'supplierId' => 'required|numeric',
             ]);
 
-            $itemId = AutoSupply::create([
+            $insertedItem = AutoSupply::create([
                 'itemName' => $validated['itemName'],
                 'itemQuantity' => $validated['itemQuantity'],
                 'unitPrice' => $validated['unitPrice'],
                 'supplierId' => $validated['supplierId'],
             ]);
 
-
-            $success = "You have added a new item";
+            $lastInsertedItem = $insertedItem->supplier->supplierName;
+            $success = "You have added a new item from ".$lastInsertedItem;
         }
 
         

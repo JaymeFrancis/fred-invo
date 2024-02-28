@@ -31,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function (){
         Route::get('/create', [InventoryController::class, "create"])->name('record-new-item');
         Route::post('/store', [InventoryController::class, "store"])->name('store-item');
         Route::get('/{id}/view', [InventoryController::class, "edit"])->name('view-item');
+        Route::get('/test', [InventoryController::class, "test"]);
     });
 
     Route::prefix('supplier')->group(function (){
