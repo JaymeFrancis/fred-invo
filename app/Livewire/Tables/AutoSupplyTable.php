@@ -17,7 +17,7 @@ class AutoSupplyTable extends DataTableComponent
 
         $this->setTheadAttributes([
             'default' => false,
-            'class' => 'bg-gray-800',
+            'class' => 'bg-green-600',
         ]);
 
         $this->setThAttributes(function(Column $column) {

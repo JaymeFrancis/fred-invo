@@ -65,6 +65,7 @@ class InventoryController extends Controller
                 'supplierId' => 'required|numeric',
             ]);
 
+
             $insertedItem = AutoSupply::create([
                 'itemName' => $validated['itemName'],
                 'itemQuantity' => $validated['itemQuantity'],

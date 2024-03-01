@@ -3,7 +3,7 @@
         <h2 class="flex items-center text-xl font-semibold leading-tight text-gray-800">
             Auto Supply
             <x-icon name="chevron-right" solid mini class="mx-2" />
-            <a href="{{ route('inventory') }}" class="hover:text-indigo-700">Inventory</a>
+            <a href="{{ route('inventory') }}" class="hover:text-white">Inventory</a>
             <x-icon name="chevron-right" solid mini class="mx-2" />
             Supplier
         </h2>
