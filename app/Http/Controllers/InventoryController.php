@@ -28,7 +28,7 @@ class InventoryController extends Controller
 
     public function store(Request $request){
         
-        
+        dd($request);
         if($request->supplierType == 'new'){
             
             $validated = $request->validate([
