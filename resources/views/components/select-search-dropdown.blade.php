@@ -14,7 +14,8 @@
 })" x-init="init()" @click.away="closeListbox()" @keydown.escape="closeListbox()"
     class="relative mt-1">
 
-    <input type="hidden" :value='value' name="{{ $name }}" readonly>
+
+    <input type="hidden" id='{{ $name }}' :value='value' name="{{ $name }}" readonly />
 
     <span class="inline-block w-full rounded-md shadow-sm">
         <div x-ref="button" @click="toggleListboxVisibility()" :aria-expanded="open" aria-haspopup="listbox"
@@ -22,9 +23,11 @@
             <span x-show="! open" x-text="value in options ? options[value] : placeholder"
                 :class="{ 'text-gray-500': !(value in options) }" class="block truncate"></span>
 
-            <input x-ref="search" x-show="open" x-model="search" @keydown.enter.stop.prevent="selectOption()"
-                @keydown.arrow-up.prevent="focusPreviousOption()" @keydown.arrow-down.prevent="focusNextOption()"
-                type="search" class="w-full h-full form-control focus:outline-none" />
+            <x-input-label for="search" class="sr-only" />
+            <input x-ref="search" id="search" x-show="open" x-model="search"
+                @keydown.enter.stop.prevent="selectOption()" @keydown.arrow-up.prevent="focusPreviousOption()"
+                @keydown.arrow-down.prevent="focusNextOption()" type="search"
+                class="w-full h-full form-control focus:outline-none" />
 
             <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor">

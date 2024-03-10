@@ -9,14 +9,13 @@
         </h2>
     </x-slot>
     <div class="py-4">
-        <div class="mt-4 bg-white rounded-md shadow-lg lg:mx-16 sm:p-4 lg:p-6" x-data='autoSupplyFunction'
-            x-init="open = ('{{ old('supplierType') }}' == 'new' ? true : false)">
+        <div class="mt-4 bg-white rounded-md shadow-lg lg:mx-16 sm:p-4 lg:p-6" x-data='autoSupplyFunction'>
             <form method="POST" action="{{ route('store-item') }}" class="flex flex-col">
                 @csrf
                 <div class="flex justify-between">
                     <div>
                         <h2 class="text-lg font-bold text-gray-900 uppercase">
-                            Auto Supply Form
+                            Recording of Auto Supply Form
                         </h2>
 
                         <p class="mt-1 text-sm text-gray-600">
@@ -44,7 +43,9 @@
                                 class='text-white !bg-sky-600 hover:!bg-sky-700'>
                                 <span x-text="open ? ' Choose From Existing Supplier' : 'New Supplier'"></span>
                             </x-secondary-button>
-                            <input type="hidden" readonly :value="open ? 'new' : 'existing'" name="supplierType">
+                            <x-input-label value="Supplier Type" class="sr-only" />
+                            <input type="hidden" id="supplierType" readonly :value="open ? 'new' : 'existing'"
+                                name="supplierType">
                         </div>
                     </div>
                     <div class="mt-3" x-show='!open'>
@@ -86,16 +87,17 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="p-4 mt-6 border border-t-2 rounded-sm shadow-sm border-t-green-600">
                     <h2 class="text-lg font-bold text-gray-900 uppercase">
                         Auto Supply Details
                     </h2>
-                    <div class="flex space-x-4">
+                    <div class="flex space-x-1">
                         <div class="w-full mt-3">
                             <x-input-label for="itemName" value="Item Name" class="uppercase" />
 
-                            <x-text-input id="itemName" name="itemName[]" type="text" class="block w-full mt-1"
-                                placeholder="Item Name" value="{{ old('itemName') }}" />
+                            <x-text-input id="itemName" name="item[0][itemName]" type="text"
+                                class="block w-full mt-1" placeholder="Item Name" value="{{ old('itemName') }}" />
 
                             <x-input-error :messages="$errors->get('itemName')" class="mt-2" />
                         </div>
@@ -103,7 +105,7 @@
                         <div class="w-4/12 mt-3">
                             <x-input-label for="itemQuantity" value="Item Quantity" class="uppercase" />
 
-                            <x-text-input id="itemQuantity" name="itemQuantity[]" type="text"
+                            <x-text-input id="itemQuantity" name="item[0][itemQuantity]" type="text"
                                 class="block w-full mt-1" placeholder="Item Quantity"
                                 value="{{ old('itemQuantity') }}" />
 
@@ -113,8 +115,8 @@
                         <div class="w-4/12 mt-3">
                             <x-input-label for="unitPrice" value="Unit Price" class="uppercase" />
 
-                            <x-text-input id="unitPrice" name="unitPrice[]" type="text" class="block w-full mt-1"
-                                placeholder="Unit Price" value="{{ old('unitPrice') }}" />
+                            <x-text-input id="unitPrice" name="item[0][unitPrice]" type="text"
+                                class="block w-full mt-1" placeholder="Unit Price" value="{{ old('unitPrice') }}" />
 
                             <x-input-error :messages="$errors->get('unitPrice')" class="mt-2" />
                         </div>
@@ -125,12 +127,12 @@
                                 id="actions">+</button>
                         </div>
                     </div>
-                    <template x-for="(field, index) in supplyFields" :key="index">
-                        <div class="flex space-x-4">
-                            <div class="w-full mt-3">
-                                <x-input-label for="itemName" value="Item Name" class="uppercase" />
 
-                                <x-text-input id="itemName" name="itemName[]" x-model='supplyFields.itemName[]'
+                    <template x-for="(field, index) in supplyFields" :key="index">
+                        <div class="flex space-x-1">
+                            <div class="w-full mt-3">
+
+                                <x-text-input x-bind:name="`item[${index + 1}][itemName]`" x-model='field.itemName'
                                     type="text" class="block w-full mt-1" placeholder="Item Name"
                                     value="{{ old('itemName') }}" />
 
@@ -138,26 +140,23 @@
                             </div>
 
                             <div class="w-4/12 mt-3">
-                                <x-input-label for="itemQuantity" value="Item Quantity" class="uppercase" />
 
-                                <x-text-input id="itemQuantity" name="itemQuantity[]" type="text"
+                                <x-text-input x-bind:name="`item[${index + 1}][itemQuantity]`" type="text"
                                     class="block w-full mt-1" placeholder="Item Quantity"
-                                    x-model='supplyFields.itemQuantity[]' value="{{ old('itemQuantity') }}" />
+                                    x-model='field.itemQuantity' value="{{ old('itemQuantity') }}" />
 
                                 <x-input-error :messages="$errors->get('itemQuantity')" class="mt-2" />
                             </div>
 
                             <div class="w-4/12 mt-3">
-                                <x-input-label for="unitPrice" value="Unit Price" class="uppercase" />
 
-                                <x-text-input id="unitPrice" name="unitPrice[]" x-model='supplyFields.unitPrice[]'
+                                <x-text-input x-bind:name="`item[${index + 1}][unitPrice]`" x-model='field.unitPrice'
                                     type="text" class="block w-full mt-1" placeholder="Unit Price"
                                     value="{{ old('unitPrice') }}" />
 
                                 <x-input-error :messages="$errors->get('unitPrice')" class="mt-2" />
                             </div>
                             <div class="w-2/12 mt-3">
-                                <x-input-label for="actions" value="Actions" class="uppercase" />
                                 <button type="button" x-on:click="removeField(index)"
                                     class="w-full p-2 mt-1 text-center text-white bg-red-500 border border-gray-300 rounded-md hover:bg-red-600"
                                     id="actions">-</button>
@@ -175,7 +174,9 @@
         Alpine.data('autoSupplyFunction', () => ({
             open: false,
 
-            supplyFields: [],
+            supplyFields: [
+
+            ],
 
             addNewField() {
                 this.supplyFields.push({
@@ -191,6 +192,21 @@
 
             toggle() {
                 this.open = !this.open
+            },
+
+            init() {
+                this.open = ('{{ old('supplierType') }}' == 'new' ? true : false)
+
+                @if (old('item'))
+                    @foreach (old('item') as $i => $field)
+                        this.supplyFields.push({
+                            itemName: '{{ $field['itemName'] }}',
+                            itemQuantity: '{{ $field['itemQuantity'] }}',
+                            unitPrice: '{{ $field['unitPrice'] }}',
+                        })
+                    @endforeach
+                    this.supplyFields.splice(0, 1)
+                @endif
             },
         }))
     })
