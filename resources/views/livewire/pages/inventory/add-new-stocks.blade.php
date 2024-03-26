@@ -97,7 +97,8 @@
                             <x-input-label for="itemName" value="Item Name" class="uppercase" />
 
                             <x-text-input id="itemName" name="item[0][itemName]" type="text"
-                                class="block w-full mt-1" placeholder="Item Name" value="{{ old('itemName') }}" />
+                                class="block w-full mt-1" placeholder="Item Name"
+                                value="{{ old('item.0.itemName') }}" />
 
                             <x-input-error :messages="$errors->get('itemName')" class="mt-2" />
                         </div>
@@ -107,7 +108,7 @@
 
                             <x-text-input id="itemQuantity" name="item[0][itemQuantity]" type="text"
                                 class="block w-full mt-1" placeholder="Item Quantity"
-                                value="{{ old('itemQuantity') }}" />
+                                value="{{ old('item.0.itemQuantity') }}" />
 
                             <x-input-error :messages="$errors->get('itemQuantity')" class="mt-2" />
                         </div>
@@ -116,7 +117,8 @@
                             <x-input-label for="unitPrice" value="Unit Price" class="uppercase" />
 
                             <x-text-input id="unitPrice" name="item[0][unitPrice]" type="text"
-                                class="block w-full mt-1" placeholder="Unit Price" value="{{ old('unitPrice') }}" />
+                                class="block w-full mt-1" placeholder="Unit Price"
+                                value="{{ old('item.0.unitPrice') }}" />
 
                             <x-input-error :messages="$errors->get('unitPrice')" class="mt-2" />
                         </div>
@@ -206,6 +208,7 @@
                         })
                     @endforeach
                     this.supplyFields.splice(0, 1)
+                    console.log('{{ old('item.0.itemName') }}')
                 @endif
             },
         }))

@@ -25,7 +25,7 @@
     <div class="relative min-h-screen md:flex" x-data="{ open: true }">
         {{-- Sidebar --}}
         <aside :class="open || '-translate-x-full'"
-            class="fixed inset-y-0 top-0 left-0 z-20 w-64 px-2 py-2 overflow-y-auto text-blue-100 transition duration-300 ease-in-out transform bg-blue-800 shadow-lg md:sticky md:translate-x-0">
+            class="absolute inset-y-0 left-0 z-10 w-64 px-2 py-2 overflow-y-auto text-blue-100 transition duration-300 ease-in-out transform bg-blue-800 shadow-lg md:relative md:translate-x-0">
             {{-- Logo --}}
             <div class="flex items-center justify-between px-2">
                 <div class="flex items-center space-x-2">
@@ -86,7 +86,7 @@
         </aside>
 
         {{-- Main Page --}}
-        <main class="flex-1 min-h-screen bg-gray-100">
+        <main class="flex-1 h-screen bg-gray-100">
             <nav class="bg-blue-900 shadow-lg">
                 <div class="px-2 mx-auto sm:px-6 lg:px-8">
                     <div class="relative flex items-center justify-end h-16">
@@ -105,23 +105,6 @@
             </div>
         </main>
     </div>
-    {{-- <div class="min-h-screen bg-gray-100">
-        <livewire:layout.navigation />
-
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="mt-1 bg-green-500 shadow">
-                <div class="px-4 py-6 mx-8 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
-
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
-    </div> --}}
 </body>
 
 </html>

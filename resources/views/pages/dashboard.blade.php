@@ -11,6 +11,7 @@
                 <div class="p-6 text-gray-900">
                     Hi this is the Dashboard
                 </div>
+
             </div>
         </div>
     </div>
