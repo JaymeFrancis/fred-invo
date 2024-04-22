@@ -96,7 +96,9 @@
                                 <x-icon name="bars-3" class="w-6 h-6" />
                             </button>
                         </div>
-                        <livewire:layout.settings />
+                        <div>
+                            <livewire:layout.settings />
+                        </div>
                     </div>
                 </div>
             </nav>

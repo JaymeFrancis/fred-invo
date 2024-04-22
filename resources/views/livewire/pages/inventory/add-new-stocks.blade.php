@@ -1,64 +1,86 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="flex items-center text-xl font-semibold leading-tight text-gray-800">
-            Auto Supply
-            <x-icon name="chevron-right" solid mini class="mx-2" />
-            <a href="{{ route('inventory') }}" class="hover:text-white">Inventory</a>
-            <x-icon name="chevron-right" solid mini class="mx-2" />
-            Record New Item
-        </h2>
-    </x-slot>
-    <div class="py-4">
-        <div class="mt-4 bg-white rounded-md shadow-lg lg:mx-16 sm:p-4 lg:p-6" x-data='autoSupplyFunction'>
-            <form method="POST" action="{{ route('store-item') }}" class="flex flex-col">
-                @csrf
-                <div class="flex justify-between">
-                    <div>
-                        <h2 class="text-lg font-bold text-gray-900 uppercase">
-                            Recording of Auto Supply Form
-                        </h2>
+    <nav class="w-fit">
+        <ul
+            class="flex items-center *:px-1 *:py-2 px-1 text-sm font-bold bg-white rounded-md shadow-sm justify-items-center">
+            <li>
+                <a href="{{ route('inventory') }}" class="hover:text-blue-700">Inventory</a>
+            </li>
+            <li>
+                <x-icon name="chevron-right" solid mini />
+            </li>
+            <li class="">
+                Record New Item
+            </li>
+        </ul>
+    </nav>
+    <div class="my-4" x-data='autoSupplyFunction'>
+        <form method="POST" action="{{ route('store-item') }}" class="flex flex-col p-2 bg-white rounded-md shadow-md">
+            @csrf
+            <div class="flex justify-between p-4">
+                <div class="border-s-[16px] bg-blue-100 p-2 rounded border-s-blue-500 ps-1">
+                    <h2 class="text-lg font-bold text-blue-700 uppercase">
+                        Auto Supply Record Form
+                    </h2>
 
-                        <p class="mt-1 text-sm text-gray-600">
-                            Please enter the details of the items that you want to add to the inventory.
-                        </p>
-                    </div>
-                    <div class="flex">
-                        <x-secondary-button class="text-white !bg-red-500 hover:bg-red-700">
-                            Cancel
-                        </x-secondary-button>
-
-                        <x-primary-button class="px-6 ms-3">
-                            Save
-                        </x-primary-button>
-                    </div>
+                    <p class="mt-1 text-sm text-gray-700">
+                        Please enter the details of the items that you want to add to the inventory.
+                    </p>
                 </div>
+                <div class="flex flex-col-reverse gap-2 mb-auto lg:flex-row justify-items-center">
+                    <x-secondary-button class="text-red-700 w-24 !bg-red-100 border-none hover:!bg-red-300">
+                        <x-icon name="x-circle" solid mini class="size-4 me-1" />
+                        <a href="{{ route('inventory') }}">Cancel</a>
+                    </x-secondary-button>
 
-                <div class="p-4 mt-6 border border-t-2 rounded-sm shadow-sm border-t-green-600">
-                    <div class="flex justify-between mb-2">
-                        <h2 class="text-lg font-bold text-gray-900 uppercase">
-                            Supplier Details
-                        </h2>
-                        <div>
-                            <x-secondary-button x-on:click='toggle()' type="button"
-                                class='text-white !bg-sky-600 hover:!bg-sky-700'>
+                    <x-primary-button class="w-24">
+                        <x-icon name="check-circle" solid mini class="size-4 me-1" />
+                        Save
+                    </x-primary-button>
+                </div>
+            </div>
+            {{-- Supplier Details --}}
+            <div class="grid grid-cols-3 gap-4 p-4">
+                <h2 class="text-lg font-bold uppercase">
+                    Supplier Details
+                </h2>
+                <div class="col-span-2">
+                    <div>
+                        <x-input-label value="Supplier Type" class="mb-1" />
+                        <div class="flex justify-start p-3 space-x-4 border border-gray-300 rounded">
+                            <x-input-label class="text-sm text-gray-600">
+                                <input type="radio" class="focus:ring-0" name="supplierType" value="existing"
+                                    id="existing" x-model="supplierType">
+                                Existing Supplier
+                            </x-input-label>
+                            <x-input-label class="text-sm text-gray-600">
+                                <input type="radio" class="focus:ring-0" name="supplierType" value="new"
+                                    id="new" x-model="supplierType">
+                                New Supplier
+                            </x-input-label>
+                            {{-- <div>
+                            <x-primary-button x-on:click='toggle()' type="button">
                                 <span x-text="open ? ' Choose From Existing Supplier' : 'New Supplier'"></span>
-                            </x-secondary-button>
+                            </x-primary-button>
                             <x-input-label value="Supplier Type" class="sr-only" />
                             <input type="hidden" id="supplierType" readonly :value="open ? 'new' : 'existing'"
                                 name="supplierType">
+                        </div> --}}
                         </div>
                     </div>
-                    <div class="mt-3" x-show='!open'>
-                        <x-input-label value="Supplier Name" class="uppercase" />
+
+                    {{-- Existing Supplier --}}
+                    <div class="mt-4" x-show='supplierType == "existing"'>
+                        <x-input-label value="Supplier Name" />
 
                         <x-select-search-dropdown model='{{ $suppliers }}' placeHolder="Select item supplier"
-                            name='supplierId' />
-
+                            name='supplierId' value="{{ old('supplierId') }}" />
                         <x-input-error :messages="$errors->get('supplierId')" class="mt-2" />
                     </div>
-                    <div class="flex flex-col md:space-x-4 md:flex-row" x-show='open'>
-                        <div class="mt-3 md:w-2/5">
-                            <x-input-label for="supplierName" value="Supplier Name" class="uppercase" />
+
+                    {{-- New Supplier --}}
+                    <div class="flex flex-col md:space-x-4 md:flex-row" x-show='supplierType == "new"'>
+                        <div class="mt-4 md:w-2/5">
+                            <x-input-label for="supplierName" value="Supplier Name" />
 
                             <x-text-input id="supplierName" name="supplierName" type="text" class="block w-full mt-1"
                                 placeholder="Supplier Name" value="{{ old('supplierName') }}" />
@@ -66,8 +88,8 @@
                             <x-input-error :messages="$errors->get('supplierName')" class="mt-2" />
                         </div>
 
-                        <div class="mt-3 md:w-2/5">
-                            <x-input-label for="supplierAddress" value="Supplier Address" class="uppercase" />
+                        <div class="mt-4 md:w-2/5">
+                            <x-input-label for="supplierAddress" value="Supplier Address" />
 
                             <x-text-input id="supplierAddress" name="supplierAddress" type="text"
                                 class="block w-full mt-1" placeholder="Supplier Address"
@@ -76,8 +98,8 @@
                             <x-input-error :messages="$errors->get('supplierAddress')" class="mt-2" />
                         </div>
 
-                        <div class="mt-3 md:w-1/5">
-                            <x-input-label for="supplierContactNumber" value="Contact Number" class="uppercase" />
+                        <div class="mt-4 md:w-1/5">
+                            <x-input-label for="supplierContactNumber" value="Contact Number" />
 
                             <x-text-input id="supplierContactNumber" name="supplierContactNumber" type="text"
                                 class="block w-full mt-1" placeholder="Contact Number"
@@ -87,46 +109,53 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-4 mt-6 border border-t-2 rounded-sm shadow-sm border-t-green-600">
-                    <h2 class="text-lg font-bold text-gray-900 uppercase">
-                        Auto Supply Details
-                    </h2>
+            <hr class="mx-4 my-6 border-2 border-blue-100 rounded-sm">
+
+            {{-- Auto Supply Details --}}
+            <div class="grid-cols-3 gap-4 p-4 lg:grid">
+                <h2 class="text-lg font-bold text-gray-900 uppercase">
+                    Auto Supply Details
+                </h2>
+                <div class="col-span-2">
                     <div class="flex space-x-1">
-                        <div class="w-full mt-3">
-                            <x-input-label for="itemName" value="Item Name" class="uppercase" />
+                        <div class="w-full ">
+                            <x-input-label for="itemName" value="Item Name" />
 
                             <x-text-input id="itemName" name="item[0][itemName]" type="text"
-                                class="block w-full mt-1" placeholder="Item Name"
-                                value="{{ old('item.0.itemName') }}" />
+                                class="{{ $errors->get('itemName') ? 'ring-1 ring-red-400' : '' }} block w-full mt-1"
+                                placeholder="Item Name" value="{{ old('item.0.itemName') }}" />
 
-                            <x-input-error :messages="$errors->get('itemName')" class="mt-2" />
+
                         </div>
 
-                        <div class="w-4/12 mt-3">
-                            <x-input-label for="itemQuantity" value="Item Quantity" class="uppercase" />
+                        <div class="w-4/12">
+                            <x-input-label for="itemQuantity" value="Item Quantity" />
 
                             <x-text-input id="itemQuantity" name="item[0][itemQuantity]" type="text"
-                                class="block w-full mt-1" placeholder="Item Quantity"
-                                value="{{ old('item.0.itemQuantity') }}" />
+                                class="{{ $errors->get('itemQuantity') ? 'ring-1 ring-red-400' : '' }} block w-full mt-1"
+                                placeholder="Item Quantity" value="{{ old('item.0.itemQuantity') }}" />
 
-                            <x-input-error :messages="$errors->get('itemQuantity')" class="mt-2" />
+
                         </div>
 
-                        <div class="w-4/12 mt-3">
-                            <x-input-label for="unitPrice" value="Unit Price" class="uppercase" />
+                        <div class="w-4/12">
+                            <x-input-label for="unitPrice" value="Unit Price" />
 
                             <x-text-input id="unitPrice" name="item[0][unitPrice]" type="text"
-                                class="block w-full mt-1" placeholder="Unit Price"
-                                value="{{ old('item.0.unitPrice') }}" />
+                                class="{{ $errors->get('unitPrice') ? 'ring-1 ring-red-400' : '' }} block w-full mt-1 "
+                                placeholder="Unit Price" value="{{ old('item.0.unitPrice') }}" />
 
-                            <x-input-error :messages="$errors->get('unitPrice')" class="mt-2" />
+                            {{-- <x-input-error :messages="$errors->get('unitPrice')" class="mt-2" /> --}}
                         </div>
-                        <div class="w-2/12 mt-3">
-                            <x-input-label for="actions" value="Actions" class="uppercase" />
+                        <div class="w-2/12">
+                            <x-input-label for="actions" value="Actions" />
                             <button type="button" x-on:click="addNewField()"
-                                class="w-full p-2 mt-1 text-center text-white bg-green-500 border border-gray-300 rounded-md hover:bg-green-600"
-                                id="actions">+</button>
+                                class="w-full p-2.5 mt-1 text-center text-blue-700 bg-blue-100 rounded hover:bg-blue-300"
+                                id="actions">
+                                <x-icon name="plus-circle" solid mini class="mx-auto size-5" />
+                            </button>
                         </div>
                     </div>
 
@@ -160,14 +189,16 @@
                             </div>
                             <div class="w-2/12 mt-3">
                                 <button type="button" x-on:click="removeField(index)"
-                                    class="w-full p-2 mt-1 text-center text-white bg-red-500 border border-gray-300 rounded-md hover:bg-red-600"
-                                    id="actions">-</button>
+                                    class="w-full p-2.5 mt-1 text-center text-red-700 bg-red-100 rounded hover:bg-red-300"
+                                    id="actions">
+                                    <x-icon name="minus-circle" solid mini class="mx-auto size-5" />
+                                </button>
                             </div>
                         </div>
                     </template>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </x-app-layout>
 
@@ -175,6 +206,8 @@
     document.addEventListener('alpine:init', () => {
         Alpine.data('autoSupplyFunction', () => ({
             open: false,
+
+            supplierType: 'existing',
 
             supplyFields: [
 
@@ -192,12 +225,14 @@
                 this.supplyFields.splice(index, 1);
             },
 
-            toggle() {
-                this.open = !this.open
-            },
-
             init() {
-                this.open = ('{{ old('supplierType') }}' == 'new' ? true : false)
+                if ('{{ old('supplierType') == 'new' }}') {
+                    this.supplierType = "new"
+                } else if ('{{ old('supplierType') == 'existing' }}') {
+                    this.supplierType = "existing"
+                } else {
+                    this.supplierType = this.supplierType
+                }
 
                 @if (old('item'))
                     @foreach (old('item') as $i => $field)

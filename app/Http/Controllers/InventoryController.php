@@ -77,8 +77,6 @@ class InventoryController extends Controller
         }
 
         
-
-        
         // AutoSupply::create($items);
 
         return redirect(route('inventory'))->with("success", $success);

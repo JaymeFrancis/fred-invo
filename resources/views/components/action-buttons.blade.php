@@ -1,8 +1,9 @@
 <div class="flex space-x-2">
     @isset($viewLink)
-        <a href="{{ $viewLink }}" class="flex px-4 py-2 text-white rounded-md bg-cyan-600">
+        <a href="{{ $viewLink }}"
+            class="flex items-center justify-center w-24 p-2 text-blue-700 bg-blue-100 rounded hover:bg-blue-300">
+            <x-icon name="eye" solid mini class="w-4 h-4 me-1" />
             View
-            <x-icon name="eye" solid mini class="w-5 h-5 ms-2" />
         </a>
         @endif
 
